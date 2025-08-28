@@ -14,13 +14,13 @@ import goalRoutes from './routes/goals';
 import csvImportRoutes from './routes/csv-import';
 
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5000;
 const prisma = new PrismaClient();
 
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'],
+  origin: ['http://localhost:3000'],
   credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));

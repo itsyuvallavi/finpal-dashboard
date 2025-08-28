@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { motion } from "motion/react";
 import { 
   Brain, 
   TrendingUp, 
@@ -12,8 +13,9 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
-export default function AuthPage() {
+export function AuthPage() {
   const { login, register, error, isLoading, clearError } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -143,21 +145,36 @@ export default function AuthPage() {
   ];
 
   return (
-    <div className="min-h-screen flex" style={{ background: 'var(--background-primary)' }}>
+    <div className="min-h-screen flex bg-background">
       {/* Left Panel - Features */}
-      <div className="hidden lg:flex lg:w-1/2 finora-sidebar p-12 flex-col justify-between">
+      <motion.div 
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/90 to-primary/80 p-12 flex-col justify-between"
+      >
         <div>
-          <div className="flex items-center gap-3 mb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="flex items-center gap-3 mb-12"
+          >
             <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
-              <Brain size={24} className="text-white" />
+              <TrendingUp size={24} className="text-white" />
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-white">FinPal</h1>
-              <p className="text-white/80 text-sm">Your Personal Finance Dashboard</p>
+              <p className="text-white/80 text-sm">Your Personal Finance AI</p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="space-y-8"
+          >
             <div>
               <h2 className="text-3xl font-semibold text-white mb-4">
                 Transform Your Financial Future
@@ -170,7 +187,13 @@ export default function AuthPage() {
 
             <div className="space-y-6">
               {features.map((feature, index) => (
-                <div key={index} className="flex items-start gap-4">
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 + index * 0.1, duration: 0.5 }}
+                  className="flex items-start gap-4"
+                >
                   <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
                     <feature.icon size={20} className="text-white" />
                   </div>
@@ -178,420 +201,272 @@ export default function AuthPage() {
                     <h3 className="font-medium text-white mb-1">{feature.title}</h3>
                     <p className="text-white/70 text-sm">{feature.description}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="text-white/60 text-sm">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.5 }}
+          className="text-white/60 text-sm"
+        >
           <p>&copy; 2025 FinPal. Trusted by 50,000+ users worldwide.</p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Right Panel - Auth Forms */}
-      <div className="flex-1 flex items-center justify-center p-8">
+      <motion.div 
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="flex-1 flex items-center justify-center p-8"
+      >
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8 text-center">
-            <div className="flex flex-col items-center justify-center mb-4">
-              <div className="p-2 bg-purple-600 rounded-lg mb-3">
-                <Brain size={24} className="text-white" />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center justify-center mb-4"
+            >
+              <div className="p-2 bg-primary rounded-lg mb-3">
+                <TrendingUp size={24} className="text-primary-foreground" />
               </div>
               <div className="text-center">
-                <h1 className="text-2xl font-semibold" style={{ color: 'var(--text-primary)' }}>FinPal</h1>
-                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Your Personal Finance Dashboard</p>
+                <h1 className="text-2xl font-semibold">FinPal</h1>
+                <p className="text-sm text-muted-foreground">Your Personal Finance AI</p>
               </div>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="space-y-8">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl">
                 {isSignUp ? 'Create Account' : 'Welcome Back'}
-              </h1>
-              <p style={{ color: 'var(--text-secondary)' }}>
+              </CardTitle>
+              <p className="text-muted-foreground">
                 {isSignUp 
                   ? 'Enter your details to create your account'
                   : 'Enter your email and password to access your account'
                 }
               </p>
-            </div>
+            </CardHeader>
 
-            {/* Error Display */}
-            {error && (
-              <div className="flex items-center gap-2 p-4 border rounded-lg" style={{ 
-                background: 'rgba(239, 68, 68, 0.1)', 
-                borderColor: 'rgba(239, 68, 68, 0.3)' 
-              }}>
-                <AlertCircle size={16} className="text-red-400 flex-shrink-0" />
-                <p className="text-sm text-red-400">{error}</p>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {isSignUp && (
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                    Full Name
-                  </label>
-                  <Input
-                    type="text"
-                    name="name"
-                    placeholder="Enter your full name"
-                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    style={{ 
-                      background: 'var(--background-card)', 
-                      color: 'var(--text-primary)',
-                      borderColor: 'var(--border-primary)'
-                    }}
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    disabled={isLoading}
-                  />
-                  {validationErrors.name && (
-                    <p className="mt-1 text-sm text-red-400">{validationErrors.name}</p>
-                  )}
-                </div>
+            <CardContent className="space-y-6">
+              {/* Error Display */}
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 p-4 border border-destructive/50 bg-destructive/10 rounded-lg"
+                >
+                  <AlertCircle size={16} className="text-destructive flex-shrink-0" />
+                  <p className="text-sm text-destructive">{error}</p>
+                </motion.div>
               )}
 
-              <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                  Email
-                </label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  style={{ 
-                    background: 'var(--background-card)', 
-                    color: 'var(--text-primary)',
-                    borderColor: 'var(--border-primary)'
-                  }}
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  disabled={isLoading}
-                />
-                {validationErrors.email && (
-                  <p className="mt-1 text-sm text-red-400">{validationErrors.email}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                  Password
-                </label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    placeholder={isSignUp ? 'Create a password' : 'Enter your password'}
-                    className="w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    style={{ 
-                      background: 'var(--background-card)', 
-                      color: 'var(--text-primary)',
-                      borderColor: 'var(--border-primary)'
-                    }}
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-300"
-                    style={{ color: 'var(--text-secondary)' }}
-                    disabled={isLoading}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {isSignUp && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
                   >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {validationErrors.password && (
-                  <p className="mt-1 text-sm text-red-400">{validationErrors.password}</p>
-                )}
-              </div>
-
-              {isSignUp && (
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                    Confirm Password
-                  </label>
-                  <Input
-                    type={showPassword ? 'text' : 'password'}
-                    name="confirmPassword"
-                    placeholder="Confirm your password"
-                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    style={{ 
-                      background: 'var(--background-card)', 
-                      color: 'var(--text-primary)',
-                      borderColor: 'var(--border-primary)'
-                    }}
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    disabled={isLoading}
-                  />
-                  {validationErrors.confirmPassword && (
-                    <p className="mt-1 text-sm text-red-400">{validationErrors.confirmPassword}</p>
-                  )}
-                </div>
-              )}
-
-              {isSignUp && (
-                <div className="border-t pt-6" style={{ borderColor: 'var(--border-primary)' }}>
-                  <h3 className="text-lg font-medium mb-4" style={{ color: 'var(--text-primary)' }}>Personal Information</h3>
-                  <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
-                    This information helps us provide personalized financial insights and recommendations.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                        Age
-                      </label>
-                      <Input
-                        type="number"
-                        name="age"
-                        placeholder="Your age"
-                        min="18"
-                        max="120"
-                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        style={{ 
-                          background: 'var(--background-card)', 
-                          color: 'var(--text-primary)',
-                          borderColor: 'var(--border-primary)'
-                        }}
-                        value={formData.age}
-                        onChange={handleInputChange}
-                        disabled={isLoading}
-                      />
-                      {validationErrors.age && (
-                        <p className="mt-1 text-sm text-red-400">{validationErrors.age}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                        Marital Status
-                      </label>
-                      <select
-                        name="maritalStatus"
-                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        style={{ 
-                          background: 'var(--background-card)', 
-                          color: 'var(--text-primary)',
-                          borderColor: 'var(--border-primary)'
-                        }}
-                        value={formData.maritalStatus}
-                        onChange={handleSelectChange}
-                        disabled={isLoading}
-                      >
-                        <option value="">Select status</option>
-                        <option value="single">Single</option>
-                        <option value="married">Married</option>
-                        <option value="divorced">Divorced</option>
-                        <option value="widowed">Widowed</option>
-                        <option value="partnership">Partnership</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                        Number of Children
-                      </label>
-                      <Input
-                        type="number"
-                        name="children"
-                        placeholder="0"
-                        min="0"
-                        max="20"
-                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        style={{ 
-                          background: 'var(--background-card)', 
-                          color: 'var(--text-primary)',
-                          borderColor: 'var(--border-primary)'
-                        }}
-                        value={formData.children}
-                        onChange={handleInputChange}
-                        disabled={isLoading}
-                      />
-                      {validationErrors.children && (
-                        <p className="mt-1 text-sm text-red-400">{validationErrors.children}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                        Location
-                      </label>
-                      <Input
-                        type="text"
-                        name="location"
-                        placeholder="City, Country"
-                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        style={{ 
-                          background: 'var(--background-card)', 
-                          color: 'var(--text-primary)',
-                          borderColor: 'var(--border-primary)'
-                        }}
-                        value={formData.location}
-                        onChange={handleInputChange}
-                        disabled={isLoading}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                      Occupation
+                    <label className="block text-sm font-medium mb-2">
+                      Full Name
                     </label>
                     <Input
                       type="text"
-                      name="occupation"
-                      placeholder="Your profession or job title"
-                      className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      style={{ 
-                        background: 'var(--background-card)', 
-                        color: 'var(--text-primary)',
-                        borderColor: 'var(--border-primary)'
-                      }}
-                      value={formData.occupation}
+                      name="name"
+                      placeholder="Enter your full name"
+                      value={formData.name}
                       onChange={handleInputChange}
                       disabled={isLoading}
+                      className="w-full"
                     />
-                  </div>
+                    {validationErrors.name && (
+                      <p className="mt-1 text-sm text-destructive">{validationErrors.name}</p>
+                    )}
+                  </motion.div>
+                )}
 
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                      Annual Income (Optional)
-                    </label>
-                    <select
-                      name="annualIncome"
-                      className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      style={{ 
-                        background: 'var(--background-card)', 
-                        color: 'var(--text-primary)',
-                        borderColor: 'var(--border-primary)'
-                      }}
-                      value={formData.annualIncome}
-                      onChange={handleSelectChange}
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Email
+                  </label>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    disabled={isLoading}
+                    className="w-full"
+                  />
+                  {validationErrors.email && (
+                    <p className="mt-1 text-sm text-destructive">{validationErrors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      placeholder={isSignUp ? 'Create a password' : 'Enter your password'}
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      disabled={isLoading}
+                      className="w-full pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       disabled={isLoading}
                     >
-                      <option value="">Prefer not to say</option>
-                      <option value="under-25k">Under $25,000</option>
-                      <option value="25k-50k">$25,000 - $50,000</option>
-                      <option value="50k-75k">$50,000 - $75,000</option>
-                      <option value="75k-100k">$75,000 - $100,000</option>
-                      <option value="100k-150k">$100,000 - $150,000</option>
-                      <option value="150k-250k">$150,000 - $250,000</option>
-                      <option value="over-250k">Over $250,000</option>
-                    </select>
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
                   </div>
+                  {validationErrors.password && (
+                    <p className="mt-1 text-sm text-destructive">{validationErrors.password}</p>
+                  )}
                 </div>
-              )}
 
-              {!isSignUp && (
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                {isSignUp && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                  >
+                    <label className="block text-sm font-medium mb-2">
+                      Confirm Password
+                    </label>
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      name="confirmPassword"
+                      placeholder="Confirm your password"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                      disabled={isLoading}
+                      className="w-full"
+                    />
+                    {validationErrors.confirmPassword && (
+                      <p className="mt-1 text-sm text-destructive">{validationErrors.confirmPassword}</p>
+                    )}
+                  </motion.div>
+                )}
+
+                {!isSignUp && (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        id="remember-me"
+                        name="remember-me"
+                        type="checkbox"
+                        className="h-4 w-4"
+                        disabled={isLoading}
+                      />
+                      <label htmlFor="remember-me" className="text-sm">
+                        Remember me
+                      </label>
+                    </div>
+                    <button
+                      type="button"
+                      className="text-sm hover:underline text-primary"
+                      disabled={isLoading}
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
+                )}
+
+                {isSignUp && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex items-start space-x-2"
+                  >
                     <input
-                      id="remember-me"
-                      name="remember-me"
+                      id="terms"
+                      name="terms"
                       type="checkbox"
-                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                      required
+                      className="h-4 w-4 mt-0.5"
                       disabled={isLoading}
                     />
-                    <label htmlFor="remember-me" className="text-sm" style={{ color: 'var(--text-primary)' }}>
-                      Remember me
+                    <label htmlFor="terms" className="text-sm">
+                      I agree to the{' '}
+                      <button type="button" className="hover:underline font-medium text-primary">
+                        Terms of Service
+                      </button>
+                      {' '}and{' '}
+                      <button type="button" className="hover:underline font-medium text-primary">
+                        Privacy Policy
+                      </button>
                     </label>
-                  </div>
+                  </motion.div>
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full"
+                >
+                  {isLoading ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 size={16} className="animate-spin" />
+                      {isSignUp ? 'Creating account...' : 'Signing in...'}
+                    </div>
+                  ) : (
+                    isSignUp ? 'Create Account' : 'Sign In'
+                  )}
+                </Button>
+              </form>
+
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">
+                  {isSignUp ? 'Already have an account?' : 'Don\'t have an account?'}{' '}
                   <button
-                    type="button"
-                    className="text-sm hover:underline"
-                    style={{ color: 'var(--text-secondary)' }}
+                    onClick={() => {
+                      setIsSignUp(!isSignUp);
+                      setFormData({ 
+                        email: '', 
+                        password: '', 
+                        confirmPassword: '', 
+                        name: '',
+                        age: '',
+                        maritalStatus: '',
+                        children: '',
+                        location: '',
+                        occupation: '',
+                        annualIncome: ''
+                      });
+                      setValidationErrors({});
+                      clearError();
+                    }}
+                    className="font-semibold hover:underline text-primary"
                     disabled={isLoading}
                   >
-                    Forgot Password
+                    {isSignUp ? 'Sign In' : 'Sign Up'}
                   </button>
-                </div>
-              )}
+                </p>
+              </div>
 
-              {isSignUp && (
-                <div className="flex items-start gap-3">
-                  <input
-                    id="terms"
-                    name="terms"
-                    type="checkbox"
-                    required
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
-                    disabled={isLoading}
-                  />
-                  <label htmlFor="terms" className="text-sm" style={{ color: 'var(--text-primary)' }}>
-                    I agree to the{' '}
-                    <button type="button" className="hover:underline font-medium" style={{ color: 'var(--text-primary)' }}>
-                      Terms of Service
-                    </button>
-                    {' '}and{' '}
-                    <button type="button" className="hover:underline font-medium" style={{ color: 'var(--text-primary)' }}>
-                      Privacy Policy
-                    </button>
-                  </label>
-                </div>
-              )}
-
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-3 mt-6 font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: 'var(--sidebar-primary)', color: 'white' }}
-              >
-                {isLoading ? (
-                  <div className="flex items-center gap-2">
-                    <Loader2 size={16} className="animate-spin" />
-                    {isSignUp ? 'Creating account...' : 'Signing in...'}
-                  </div>
-                ) : (
-                  isSignUp ? 'Create Account' : 'Sign In'
-                )}
-              </Button>
-            </form>
-
-            <div className="text-center mt-8">
-              <p style={{ color: 'var(--text-secondary)' }}>
-                {isSignUp ? 'Already have an account?' : 'Don\'t have an account?'}{' '}
-                <button
-                  onClick={() => {
-                    setIsSignUp(!isSignUp);
-                    setFormData({ 
-                      email: '', 
-                      password: '', 
-                      confirmPassword: '', 
-                      name: '',
-                      age: '',
-                      maritalStatus: '',
-                      children: '',
-                      location: '',
-                      occupation: '',
-                      annualIncome: ''
-                    });
-                    setValidationErrors({});
-                    clearError();
-                  }}
-                  className="font-semibold hover:underline"
-                  style={{ color: 'var(--text-primary)' }}
-                  disabled={isLoading}
-                >
-                  {isSignUp ? 'Sign In' : 'Sign Up'}
-                </button>
+              <p className="text-center text-sm text-muted-foreground">
+                Bank-level security. Your data is protected.
               </p>
-            </div>
-          </div>
-
-          <p className="text-center text-sm mt-8" style={{ color: 'var(--text-secondary)' }}>
-            Bank-level security. Your data is protected.
-          </p>
+            </CardContent>
+          </Card>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
