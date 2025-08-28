@@ -11,7 +11,11 @@ import {
   BookOpen, 
   Settings, 
   Brain,
-  LogOut
+  LogOut,
+  BarChart3,
+  Users,
+  Calendar,
+  Star
 } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
@@ -28,6 +32,9 @@ import GoalsPage from './components/GoalsPage';
 import InvestmentsPage from './components/InvestmentsPage';
 import LearnPage from './components/LearnPage';
 import SettingsPage from './components/SettingsPage';
+
+// Import Finora theme
+import './components/ui/finora-theme.css';
 
 function AppContent() {
   const [currentPage, setCurrentPage] = useState('Dashboard');
@@ -59,10 +66,10 @@ function AppContent() {
   // Show loading while checking authentication
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
         </div>
       </div>
     );
@@ -75,12 +82,13 @@ function AppContent() {
 
   const sidebarItems = [
     { icon: Home, label: 'Dashboard', count: null, enabled: true },
+    { icon: BarChart3, label: 'Analytics', count: null, enabled: true, isActive: currentPage === 'Spending' },
     { icon: CreditCard, label: 'Spending', count: null, enabled: true },
     { icon: Target, label: 'Budgets', count: null, enabled: false },
     { icon: TrendingUp, label: 'Goals', count: null, enabled: true },
-    { icon: BookOpen, label: 'Investments', count: null, enabled: false },
-    { icon: Brain, label: 'Learn', count: null, enabled: false },
-    { icon: Settings, label: 'Settings', count: null, enabled: true },
+    { icon: Users, label: 'Investments', count: null, enabled: false },
+    { icon: Calendar, label: 'Learn', count: null, enabled: false },
+    { icon: Star, label: 'Favorites', count: null, enabled: false },
   ];
 
   // Goals will be empty until user creates them
@@ -96,6 +104,8 @@ function AppContent() {
       case 'Dashboard':
         return <Dashboard onNavigate={setCurrentPage} />;
       case 'Spending':
+        return <SpendingPage />;
+      case 'Analytics':
         return <SpendingPage />;
       case 'Budgets':
         return <BudgetsPage />;
@@ -117,7 +127,8 @@ function AppContent() {
       case 'Dashboard':
         return 'Dashboard Overview';
       case 'Spending':
-        return 'Spending Analysis';
+      case 'Analytics':
+        return 'Transactions';
       case 'Budgets':
         return 'Budget Management';
       case 'Goals':
@@ -136,7 +147,8 @@ function AppContent() {
   const getSearchPlaceholder = () => {
     switch (currentPage) {
       case 'Spending':
-        return 'Search transactions...';
+      case 'Analytics':
+        return 'Search...';
       case 'Budgets':
         return 'Search budget categories...';
       case 'Goals':
@@ -146,145 +158,162 @@ function AppContent() {
       case 'Learn':
         return 'Search courses...';
       default:
-        return 'Search transactions, goals...';
+        return 'Search...';
     }
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-6">
-          <h1 className="text-xl font-semibold text-gray-900">FinanceAI</h1>
-          <p className="text-xs text-gray-500 mt-1">Your Personal Finance Coach</p>
-        </div>
-        
-        <nav className="flex-1 px-4">
-          <ul className="space-y-1">
-            {sidebarItems.map((item, index) => (
-              <li key={index}>
-                <button
-                  onClick={() => item.enabled && setCurrentPage(item.label)}
-                  disabled={!item.enabled}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-                    !item.enabled
-                      ? 'text-gray-400 cursor-not-allowed opacity-50'
-                      : currentPage === item.label
-                      ? 'bg-gray-100 text-gray-900 cursor-pointer'
-                      : 'text-gray-700 hover:bg-gray-100 cursor-pointer'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <item.icon size={16} />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.count && (
-                    <Badge variant="secondary" className="text-xs">
-                      {item.count}
-                    </Badge>
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-8">
-            <p className="px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Quick Goals
-            </p>
-            <ul className="mt-2 space-y-2">
-              {goalCategories.map((goal: any, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => setCurrentPage('Goals')}
-                    className="w-full px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-700">{goal.label}</span>
-                      <span className="text-xs text-gray-500">{goal.progress}%</span>
-                    </div>
-                    <Progress value={goal.progress} className="h-1.5" />
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="text-xs text-gray-500">{goal.current}</span>
-                      <span className="text-xs text-gray-500">{goal.target}</span>
-                    </div>
-                  </button>
-                </li>
-              ))}
-            </ul>
+    <div className="flex h-screen" style={{ background: 'var(--background-primary)' }}>
+      {/* Finora Purple Sidebar */}
+      <div className="w-20 finora-sidebar flex flex-col items-center py-6">
+        {/* Logo */}
+        <div className="mb-8">
+          <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <div className="w-6 h-6 rounded bg-white/90 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-purple-600"></div>
+            </div>
           </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 flex flex-col items-center space-y-2">
+          {sidebarItems.map((item, index) => {
+            const Icon = item.icon;
+            const isActive = currentPage === item.label || (item.label === 'Analytics' && currentPage === 'Spending');
+            
+            return (
+              <button
+                key={index}
+                onClick={() => item.enabled && setCurrentPage(item.label)}
+                disabled={!item.enabled}
+                className={`
+                  w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200
+                  ${!item.enabled 
+                    ? 'opacity-30 cursor-not-allowed' 
+                    : isActive 
+                      ? 'bg-white/20 backdrop-blur-sm shadow-lg' 
+                      : 'hover:bg-white/10 backdrop-blur-sm cursor-pointer'
+                  }
+                `}
+                title={item.label}
+              >
+                <Icon 
+                  size={20} 
+                  className={`
+                    ${!item.enabled
+                      ? 'text-white/30'
+                      : isActive 
+                        ? 'text-white' 
+                        : 'text-white/70 hover:text-white'
+                    } transition-colors duration-200
+                  `} 
+                />
+              </button>
+            );
+          })}
         </nav>
 
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Avatar className="w-8 h-8">
-                <AvatarFallback className="text-sm bg-blue-100 text-blue-600">
-                  {user?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
-                <p className="text-xs text-gray-500">Connected</p>
-              </div>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleLogout}
-              className="p-1 h-8 w-8 text-gray-400 hover:text-gray-600"
-            >
-              <LogOut size={14} />
-            </Button>
+        {/* Settings */}
+        <div className="mt-auto mb-4">
+          <button 
+            onClick={() => setCurrentPage('Settings')}
+            className={`
+              w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200
+              ${currentPage === 'Settings' 
+                ? 'bg-white/20 backdrop-blur-sm shadow-lg' 
+                : 'hover:bg-white/10 backdrop-blur-sm'
+              }
+            `}
+            title="Settings"
+          >
+            <Settings 
+              size={20} 
+              className={`
+                ${currentPage === 'Settings' ? 'text-white' : 'text-white/70 hover:text-white'} 
+                transition-colors duration-200
+              `} 
+            />
+          </button>
+        </div>
+
+        {/* User Avatar */}
+        <div>
+          <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-white/20">
+            <Avatar className="w-full h-full">
+              <AvatarFallback className="text-sm bg-white text-purple-600">
+                {user?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'U'}
+              </AvatarFallback>
+            </Avatar>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 flex-1">
-              <h2 className="text-lg font-semibold text-gray-900">{getPageTitle()}</h2>
-              <div className="relative flex-1 max-w-md ml-8">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-                <Input
-                  placeholder={getSearchPlaceholder()}
-                  className="pl-10 bg-gray-50 border-0"
-                />
+        {/* Header - Only show if not on main analytics/spending page */}
+        {currentPage !== 'Spending' && currentPage !== 'Analytics' && (
+          <div className="finora-card border-0 border-b rounded-none px-6 py-4" style={{ borderColor: 'var(--border-primary)' }}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 flex-1">
+                <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
+                  {getPageTitle()}
+                </h2>
+                <div className="relative flex-1 max-w-md ml-8">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2" style={{ color: 'var(--text-secondary)' }} size={16} />
+                  <Input
+                    placeholder={getSearchPlaceholder()}
+                    className="pl-10 border-gray-600 focus:ring-purple-500"
+                    style={{ 
+                      background: 'var(--background-card)', 
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-primary)'
+                    }}
+                  />
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="gap-2 border-gray-600 hover:bg-gray-700"
+                  style={{ 
+                    borderColor: 'var(--border-primary)',
+                    color: 'var(--text-secondary)'
+                  }}
+                >
+                  <Filter size={16} />
+                  This Month
+                </Button>
               </div>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Filter size={16} />
-                This Month
-              </Button>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className={`gap-2 transition-colors ${!isPageEnabled(currentPage) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-50'}`}
-                disabled={!isPageEnabled(currentPage)}
-              >
-                <Brain size={16} />
-                AI Insights
-              </Button>
-              <Button 
-                size="sm" 
-                className={`gap-2 bg-black hover:bg-gray-800 transition-colors ${!isPageEnabled(currentPage) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                disabled={!isPageEnabled(currentPage)}
-                onClick={handleAddButtonClick}
-              >
-                <Plus size={16} />
-                {currentPage === 'Spending' ? 'Add Transaction' :
-                 currentPage === 'Budgets' ? 'Add Budget' :
-                 currentPage === 'Goals' ? 'Add Goal' :
-                 currentPage === 'Investments' ? 'Add Investment' :
-                 currentPage === 'Learn' ? 'Enroll Course' : 'Add Transaction'}
-              </Button>
+              <div className="flex items-center gap-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className={`gap-2 border-gray-600 hover:bg-gray-700 ${!isPageEnabled(currentPage) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  disabled={!isPageEnabled(currentPage)}
+                  style={{ 
+                    borderColor: 'var(--border-primary)',
+                    color: 'var(--text-secondary)'
+                  }}
+                >
+                  <Brain size={16} />
+                  AI Insights
+                </Button>
+                <Button 
+                  size="sm" 
+                  className={`gap-2 bg-purple-600 hover:bg-purple-700 ${!isPageEnabled(currentPage) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  disabled={!isPageEnabled(currentPage)}
+                  onClick={handleAddButtonClick}
+                >
+                  <Plus size={16} />
+                  {currentPage === 'Spending' ? 'Add Transaction' :
+                   currentPage === 'Budgets' ? 'Add Budget' :
+                   currentPage === 'Goals' ? 'Add Goal' :
+                   currentPage === 'Investments' ? 'Add Investment' :
+                   currentPage === 'Learn' ? 'Enroll Course' : 'Add Transaction'}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Page Content */}
         <div className="flex-1 overflow-auto">

@@ -1,0 +1,80 @@
+/* Finora Theme - Exact color matching */
+:root {
+  /* Purple sidebar gradient */
+  --sidebar-primary: #6B46C1;
+  --sidebar-secondary: #553C9A;
+  --sidebar-gradient: linear-gradient(180deg, #6B46C1 0%, #553C9A 100%);
+  
+  /* Dark background */
+  --background-primary: #111827;
+  --background-secondary: #1F2937;
+  --background-card: #1F2937;
+  
+  /* Text colors */
+  --text-primary: #F9FAFB;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+  
+  /* Status colors */
+  --status-paid: #10B981;
+  --status-overdue: #EF4444;
+  --status-pending: #8B5CF6;
+  
+  /* Chart colors */
+  --chart-revenue: #10B981;
+  --chart-expense: #EF4444;
+  --chart-profit: #10B981;
+  
+  /* Border colors */
+  --border-primary: #374151;
+  --border-secondary: #4B5563;
+}
+
+/* Global dark theme styles */
+body {
+  background: var(--background-primary);
+  color: var(--text-primary);
+}
+
+/* Card styles */
+.finora-card {
+  background: var(--background-card);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+}
+
+/* Sidebar styles */
+.finora-sidebar {
+  background: var(--sidebar-gradient);
+  border: none;
+}
+
+/* Status badge styles */
+.status-paid {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--status-paid);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-overdue {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--status-overdue);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.status-pending {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--status-pending);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+/* Mini chart container */
+.mini-chart {
+  height: 40px;
+  width: 60px;
+}
+
+/* Transaction row hover */
+.transaction-row:hover {
+  background: rgba(75, 85, 99, 0.1);
+}

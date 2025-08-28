@@ -143,17 +143,17 @@ export default function AuthPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex">
+    <div className="min-h-screen flex" style={{ background: 'var(--background-primary)' }}>
       {/* Left Panel - Features */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-900 to-gray-800 p-12 flex-col justify-between">
+      <div className="hidden lg:flex lg:w-1/2 finora-sidebar p-12 flex-col justify-between">
         <div>
           <div className="flex items-center gap-3 mb-12">
-            <div className="p-2 bg-white rounded-lg">
-              <Brain size={24} className="text-gray-900" />
+            <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
+              <Brain size={24} className="text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-semibold text-white">FinanceAI</h1>
-              <p className="text-gray-300 text-sm">Your Personal Finance Coach</p>
+              <h1 className="text-2xl font-semibold text-white">FinPal</h1>
+              <p className="text-white/80 text-sm">Your Personal Finance Dashboard</p>
             </div>
           </div>
 
@@ -162,7 +162,7 @@ export default function AuthPage() {
               <h2 className="text-3xl font-semibold text-white mb-4">
                 Transform Your Financial Future
               </h2>
-              <p className="text-gray-300 text-lg leading-relaxed">
+              <p className="text-white/80 text-lg leading-relaxed">
                 Join thousands of users who've mastered their finances with AI-powered insights, 
                 personalized education, and smart goal tracking.
               </p>
@@ -171,12 +171,12 @@ export default function AuthPage() {
             <div className="space-y-6">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-start gap-4">
-                  <div className="p-2 bg-white/10 rounded-lg">
+                  <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
                     <feature.icon size={20} className="text-white" />
                   </div>
                   <div>
                     <h3 className="font-medium text-white mb-1">{feature.title}</h3>
-                    <p className="text-gray-300 text-sm">{feature.description}</p>
+                    <p className="text-white/70 text-sm">{feature.description}</p>
                   </div>
                 </div>
               ))}
@@ -184,8 +184,8 @@ export default function AuthPage() {
           </div>
         </div>
 
-        <div className="text-gray-400 text-sm">
-          <p>&copy; 2025 FinanceAI. Trusted by 50,000+ users worldwide.</p>
+        <div className="text-white/60 text-sm">
+          <p>&copy; 2025 FinPal. Trusted by 50,000+ users worldwide.</p>
         </div>
       </div>
 
@@ -194,22 +194,22 @@ export default function AuthPage() {
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8 text-center">
             <div className="flex flex-col items-center justify-center mb-4">
-              <div className="p-2 bg-gray-900 rounded-lg mb-3">
+              <div className="p-2 bg-purple-600 rounded-lg mb-3">
                 <Brain size={24} className="text-white" />
               </div>
               <div className="text-center">
-                <h1 className="text-2xl font-semibold text-gray-900">FinanceAI</h1>
-                <p className="text-gray-600 text-sm">Your Personal Finance Coach</p>
+                <h1 className="text-2xl font-semibold" style={{ color: 'var(--text-primary)' }}>FinPal</h1>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Your Personal Finance Dashboard</p>
               </div>
             </div>
           </div>
 
           <div className="space-y-8">
             <div className="text-center">
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
                 {isSignUp ? 'Create Account' : 'Welcome Back'}
               </h1>
-              <p className="text-gray-600">
+              <p style={{ color: 'var(--text-secondary)' }}>
                 {isSignUp 
                   ? 'Enter your details to create your account'
                   : 'Enter your email and password to access your account'
@@ -219,53 +219,66 @@ export default function AuthPage() {
 
             {/* Error Display */}
             {error && (
-              <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="flex items-center gap-2 p-4 border rounded-lg" style={{ 
+                background: 'rgba(239, 68, 68, 0.1)', 
+                borderColor: 'rgba(239, 68, 68, 0.3)' 
+              }}>
+                <AlertCircle size={16} className="text-red-400 flex-shrink-0" />
+                <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {isSignUp && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                     Full Name
                   </label>
                   <Input
                     type="text"
                     name="name"
                     placeholder="Enter your full name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    style={{ 
+                      background: 'var(--background-card)', 
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-primary)'
+                    }}
                     value={formData.name}
                     onChange={handleInputChange}
                     disabled={isLoading}
                   />
                   {validationErrors.name && (
-                    <p className="mt-1 text-sm text-red-600">{validationErrors.name}</p>
+                    <p className="mt-1 text-sm text-red-400">{validationErrors.name}</p>
                   )}
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   Email
                 </label>
                 <Input
                   type="email"
                   name="email"
                   placeholder="Enter your email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  style={{ 
+                    background: 'var(--background-card)', 
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border-primary)'
+                  }}
                   value={formData.email}
                   onChange={handleInputChange}
                   disabled={isLoading}
                 />
                 {validationErrors.email && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+                  <p className="mt-1 text-sm text-red-400">{validationErrors.email}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   Password
                 </label>
                 <div className="relative">
@@ -273,7 +286,12 @@ export default function AuthPage() {
                     type={showPassword ? 'text' : 'password'}
                     name="password"
                     placeholder={isSignUp ? 'Create a password' : 'Enter your password'}
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    style={{ 
+                      background: 'var(--background-card)', 
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-primary)'
+                    }}
                     value={formData.password}
                     onChange={handleInputChange}
                     disabled={isLoading}
@@ -281,47 +299,53 @@ export default function AuthPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-300"
+                    style={{ color: 'var(--text-secondary)' }}
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
                 {validationErrors.password && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+                  <p className="mt-1 text-sm text-red-400">{validationErrors.password}</p>
                 )}
               </div>
 
               {isSignUp && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                     Confirm Password
                   </label>
                   <Input
                     type={showPassword ? 'text' : 'password'}
                     name="confirmPassword"
                     placeholder="Confirm your password"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    style={{ 
+                      background: 'var(--background-card)', 
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-primary)'
+                    }}
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     disabled={isLoading}
                   />
                   {validationErrors.confirmPassword && (
-                    <p className="mt-1 text-sm text-red-600">{validationErrors.confirmPassword}</p>
+                    <p className="mt-1 text-sm text-red-400">{validationErrors.confirmPassword}</p>
                   )}
                 </div>
               )}
 
               {isSignUp && (
-                <div className="border-t pt-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Personal Information</h3>
-                  <p className="text-sm text-gray-600 mb-6">
+                <div className="border-t pt-6" style={{ borderColor: 'var(--border-primary)' }}>
+                  <h3 className="text-lg font-medium mb-4" style={{ color: 'var(--text-primary)' }}>Personal Information</h3>
+                  <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
                     This information helps us provide personalized financial insights and recommendations.
                   </p>
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                         Age
                       </label>
                       <Input
@@ -330,23 +354,33 @@ export default function AuthPage() {
                         placeholder="Your age"
                         min="18"
                         max="120"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        style={{ 
+                          background: 'var(--background-card)', 
+                          color: 'var(--text-primary)',
+                          borderColor: 'var(--border-primary)'
+                        }}
                         value={formData.age}
                         onChange={handleInputChange}
                         disabled={isLoading}
                       />
                       {validationErrors.age && (
-                        <p className="mt-1 text-sm text-red-600">{validationErrors.age}</p>
+                        <p className="mt-1 text-sm text-red-400">{validationErrors.age}</p>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                         Marital Status
                       </label>
                       <select
                         name="maritalStatus"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        style={{ 
+                          background: 'var(--background-card)', 
+                          color: 'var(--text-primary)',
+                          borderColor: 'var(--border-primary)'
+                        }}
                         value={formData.maritalStatus}
                         onChange={handleSelectChange}
                         disabled={isLoading}
@@ -363,7 +397,7 @@ export default function AuthPage() {
 
                   <div className="grid grid-cols-2 gap-4 mt-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                         Number of Children
                       </label>
                       <Input
@@ -372,25 +406,35 @@ export default function AuthPage() {
                         placeholder="0"
                         min="0"
                         max="20"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        style={{ 
+                          background: 'var(--background-card)', 
+                          color: 'var(--text-primary)',
+                          borderColor: 'var(--border-primary)'
+                        }}
                         value={formData.children}
                         onChange={handleInputChange}
                         disabled={isLoading}
                       />
                       {validationErrors.children && (
-                        <p className="mt-1 text-sm text-red-600">{validationErrors.children}</p>
+                        <p className="mt-1 text-sm text-red-400">{validationErrors.children}</p>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                         Location
                       </label>
                       <Input
                         type="text"
                         name="location"
                         placeholder="City, Country"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        style={{ 
+                          background: 'var(--background-card)', 
+                          color: 'var(--text-primary)',
+                          borderColor: 'var(--border-primary)'
+                        }}
                         value={formData.location}
                         onChange={handleInputChange}
                         disabled={isLoading}
@@ -399,14 +443,19 @@ export default function AuthPage() {
                   </div>
 
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                       Occupation
                     </label>
                     <Input
                       type="text"
                       name="occupation"
                       placeholder="Your profession or job title"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      style={{ 
+                        background: 'var(--background-card)', 
+                        color: 'var(--text-primary)',
+                        borderColor: 'var(--border-primary)'
+                      }}
                       value={formData.occupation}
                       onChange={handleInputChange}
                       disabled={isLoading}
@@ -414,12 +463,17 @@ export default function AuthPage() {
                   </div>
 
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                       Annual Income (Optional)
                     </label>
                     <select
                       name="annualIncome"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                      className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      style={{ 
+                        background: 'var(--background-card)', 
+                        color: 'var(--text-primary)',
+                        borderColor: 'var(--border-primary)'
+                      }}
                       value={formData.annualIncome}
                       onChange={handleSelectChange}
                       disabled={isLoading}
@@ -444,16 +498,17 @@ export default function AuthPage() {
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
                       disabled={isLoading}
                     />
-                    <label htmlFor="remember-me" className="text-sm text-gray-700">
+                    <label htmlFor="remember-me" className="text-sm" style={{ color: 'var(--text-primary)' }}>
                       Remember me
                     </label>
                   </div>
                   <button
                     type="button"
-                    className="text-sm text-gray-600 hover:text-gray-900"
+                    className="text-sm hover:underline"
+                    style={{ color: 'var(--text-secondary)' }}
                     disabled={isLoading}
                   >
                     Forgot Password
@@ -468,16 +523,16 @@ export default function AuthPage() {
                     name="terms"
                     type="checkbox"
                     required
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
+                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
                     disabled={isLoading}
                   />
-                  <label htmlFor="terms" className="text-sm text-gray-700">
+                  <label htmlFor="terms" className="text-sm" style={{ color: 'var(--text-primary)' }}>
                     I agree to the{' '}
-                    <button type="button" className="text-gray-900 hover:underline font-medium">
+                    <button type="button" className="hover:underline font-medium" style={{ color: 'var(--text-primary)' }}>
                       Terms of Service
                     </button>
                     {' '}and{' '}
-                    <button type="button" className="text-gray-900 hover:underline font-medium">
+                    <button type="button" className="hover:underline font-medium" style={{ color: 'var(--text-primary)' }}>
                       Privacy Policy
                     </button>
                   </label>
@@ -487,7 +542,8 @@ export default function AuthPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 mt-6 bg-black hover:bg-gray-800 text-white font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 mt-6 font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: 'var(--sidebar-primary)', color: 'white' }}
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
@@ -501,7 +557,7 @@ export default function AuthPage() {
             </form>
 
             <div className="text-center mt-8">
-              <p className="text-gray-600">
+              <p style={{ color: 'var(--text-secondary)' }}>
                 {isSignUp ? 'Already have an account?' : 'Don\'t have an account?'}{' '}
                 <button
                   onClick={() => {
@@ -521,7 +577,8 @@ export default function AuthPage() {
                     setValidationErrors({});
                     clearError();
                   }}
-                  className="font-semibold text-gray-900 hover:underline"
+                  className="font-semibold hover:underline"
+                  style={{ color: 'var(--text-primary)' }}
                   disabled={isLoading}
                 >
                   {isSignUp ? 'Sign In' : 'Sign Up'}
@@ -530,7 +587,7 @@ export default function AuthPage() {
             </div>
           </div>
 
-          <p className="text-center text-sm text-gray-600 mt-8">
+          <p className="text-center text-sm mt-8" style={{ color: 'var(--text-secondary)' }}>
             Bank-level security. Your data is protected.
           </p>
         </div>

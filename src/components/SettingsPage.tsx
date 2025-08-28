@@ -145,50 +145,52 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-[400px]" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
-          <Loader2 size={32} className="animate-spin mx-auto mb-4 text-gray-400" />
-          <p className="text-gray-600">Loading settings...</p>
+          <Loader2 size={32} className="animate-spin mx-auto mb-4" style={{ color: 'var(--text-secondary)' }} />
+          <p style={{ color: 'var(--text-secondary)' }}>Loading settings...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-8 max-w-4xl mx-auto" style={{ background: 'var(--background-primary)', minHeight: '100vh' }}>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-2">Account Settings</h1>
-        <p className="text-gray-600">Manage your profile and account preferences</p>
+        <h1 className="text-2xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Account Settings</h1>
+        <p style={{ color: 'var(--text-secondary)' }}>Manage your profile and account preferences</p>
       </div>
 
       {/* Message Display */}
       {message && (
-        <div className={`flex items-center gap-2 p-4 mb-6 rounded-lg ${
-          message.type === 'success' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+        <div className={`flex items-center gap-2 p-4 mb-6 rounded-lg border ${
+          message.type === 'success' 
+            ? 'bg-green-500/10 border-green-400/30' 
+            : 'bg-red-500/10 border-red-400/30'
         }`}>
           {message.type === 'success' ? (
-            <CheckCircle size={16} className="text-green-500 flex-shrink-0" />
+            <CheckCircle size={16} className="text-green-400 flex-shrink-0" />
           ) : (
-            <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
+            <AlertCircle size={16} className="text-red-400 flex-shrink-0" />
           )}
-          <p className={`text-sm ${message.type === 'success' ? 'text-green-700' : 'text-red-700'}`}>
+          <p className={`text-sm ${message.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
             {message.text}
           </p>
         </div>
       )}
 
       {/* Profile Information */}
-      <Card className="p-6 mb-6">
+      <div className="finora-card p-6 mb-6">
         <div className="flex items-center gap-3 mb-6">
-          <User size={20} className="text-gray-600" />
-          <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
+          <User size={20} style={{ color: 'var(--text-secondary)' }} />
+          <h2 className="text-lg font-medium" style={{ color: 'var(--text-primary)' }}>Profile Information</h2>
         </div>
 
         <form onSubmit={handleProfileSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 Full Name *
               </label>
               <Input
@@ -197,16 +199,21 @@ export default function SettingsPage() {
                 value={profileData.name}
                 onChange={handleInputChange}
                 placeholder="Enter your full name"
-                className="hover:border-gray-400 focus:border-blue-500 transition-colors cursor-text"
+                className="transition-colors"
+                style={{ 
+                  background: 'var(--background-primary)', 
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-primary)'
+                }}
                 disabled={isSaving}
               />
               {validationErrors.name && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.name}</p>
+                <p className="mt-1 text-sm text-red-400">{validationErrors.name}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 Email Address *
               </label>
               <Input
@@ -215,22 +222,27 @@ export default function SettingsPage() {
                 value={profileData.email}
                 onChange={handleInputChange}
                 placeholder="Enter your email"
-                className="hover:border-gray-400 focus:border-blue-500 transition-colors cursor-text"
+                className="transition-colors"
+                style={{ 
+                  background: 'var(--background-primary)', 
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-primary)'
+                }}
                 disabled={isSaving}
               />
               {validationErrors.email && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+                <p className="mt-1 text-sm text-red-400">{validationErrors.email}</p>
               )}
             </div>
           </div>
 
           {/* Personal Information */}
-          <div className="border-t pt-6">
-            <h3 className="text-md font-medium text-gray-900 mb-4">Personal Details</h3>
+          <div className="border-t pt-6" style={{ borderColor: 'var(--border-primary)' }}>
+            <h3 className="text-md font-medium mb-4" style={{ color: 'var(--text-primary)' }}>Personal Details</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   Age
                 </label>
                 <Input
@@ -241,23 +253,33 @@ export default function SettingsPage() {
                   placeholder="Your age"
                   min="18"
                   max="120"
-                  className="hover:border-gray-400 focus:border-blue-500 transition-colors cursor-text"
+                  className="transition-colors"
+                  style={{ 
+                    background: 'var(--background-primary)', 
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border-primary)'
+                  }}
                   disabled={isSaving}
                 />
                 {validationErrors.age && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.age}</p>
+                  <p className="mt-1 text-sm text-red-400">{validationErrors.age}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   Marital Status
                 </label>
                 <select
                   name="maritalStatus"
                   value={profileData.maritalStatus}
                   onChange={handleSelectChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:border-blue-500 transition-colors cursor-pointer bg-white"
+                  className="w-full px-3 py-2 border rounded-md transition-colors"
+                  style={{ 
+                    background: 'var(--background-card)', 
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border-primary)'
+                  }}
                   disabled={isSaving}
                 >
                   <option value="">Select status</option>
@@ -272,7 +294,7 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   Number of Children
                 </label>
                 <Input
@@ -283,16 +305,21 @@ export default function SettingsPage() {
                   placeholder="0"
                   min="0"
                   max="20"
-                  className="hover:border-gray-400 focus:border-blue-500 transition-colors cursor-text"
+                  className="transition-colors"
+                  style={{ 
+                    background: 'var(--background-primary)', 
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border-primary)'
+                  }}
                   disabled={isSaving}
                 />
                 {validationErrors.children && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.children}</p>
+                  <p className="mt-1 text-sm text-red-400">{validationErrors.children}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   Location
                 </label>
                 <Input
@@ -301,14 +328,19 @@ export default function SettingsPage() {
                   value={profileData.location}
                   onChange={handleInputChange}
                   placeholder="City, Country"
-                  className="hover:border-gray-400 focus:border-blue-500 transition-colors cursor-text"
+                  className="transition-colors"
+                  style={{ 
+                    background: 'var(--background-primary)', 
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border-primary)'
+                  }}
                   disabled={isSaving}
                 />
               </div>
             </div>
 
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 Occupation
               </label>
               <Input
@@ -317,20 +349,30 @@ export default function SettingsPage() {
                 value={profileData.occupation}
                 onChange={handleInputChange}
                 placeholder="Your profession or job title"
-                className="hover:border-gray-400 focus:border-blue-500 transition-colors cursor-text"
+                className="transition-colors"
+                style={{ 
+                  background: 'var(--background-primary)', 
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-primary)'
+                }}
                 disabled={isSaving}
               />
             </div>
 
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 Annual Income
               </label>
               <select
                 name="annualIncome"
                 value={profileData.annualIncome}
                 onChange={handleSelectChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:border-blue-500 transition-colors cursor-pointer bg-white"
+                className="w-full px-3 py-2 border rounded-md transition-colors"
+                style={{ 
+                  background: 'var(--background-card)', 
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-primary)'
+                }}
                 disabled={isSaving}
               >
                 <option value="">Prefer not to say</option>
@@ -345,11 +387,12 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="flex justify-end pt-6 border-t">
+          <div className="flex justify-end pt-6 border-t" style={{ borderColor: 'var(--border-primary)' }}>
             <Button 
               type="submit"
               disabled={isSaving}
-              className="gap-2 hover:bg-gray-800 transition-colors cursor-pointer"
+              className="gap-2 transition-colors"
+              style={{ background: 'var(--sidebar-primary)' }}
             >
               {isSaving ? (
                 <>
@@ -365,7 +408,7 @@ export default function SettingsPage() {
             </Button>
           </div>
         </form>
-      </Card>
+      </div>
     </div>
   );
 }

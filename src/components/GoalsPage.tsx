@@ -6,7 +6,9 @@ import {
   TrendingUp,
   Plus,
   CheckCircle,
-  FileText
+  FileText,
+  ArrowUpRight,
+  Clock
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -42,20 +44,20 @@ export default function GoalsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'on-track': return 'bg-green-100 text-green-800';
-      case 'behind': return 'bg-red-100 text-red-800';
-      case 'ahead': return 'bg-blue-100 text-blue-800';
-      case 'completed': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'on-track': return 'text-green-400 border-green-400/30';
+      case 'behind': return 'text-red-400 border-red-400/30';
+      case 'ahead': return 'text-blue-400 border-blue-400/30';
+      case 'completed': return 'text-purple-400 border-purple-400/30';
+      default: return 'text-gray-400 border-gray-400/30';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'high': return 'text-red-400 border-red-400/30';
+      case 'medium': return 'text-yellow-400 border-yellow-400/30';
+      case 'low': return 'text-green-400 border-green-400/30';
+      default: return 'text-gray-400 border-gray-400/30';
     }
   };
 
@@ -69,14 +71,11 @@ export default function GoalsPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6">
-        <div className="animate-pulse space-y-6">
-          <div className="grid grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <Card key={i} className="p-6">
-                <div className="h-20 bg-gray-200 rounded"></div>
-              </Card>
-            ))}
+      <div className="finora-goals-page" style={{ background: 'var(--background-primary)', color: 'var(--text-primary)' }}>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto mb-4"></div>
+            <p style={{ color: 'var(--text-secondary)' }}>Loading goals...</p>
           </div>
         </div>
       </div>
@@ -86,71 +85,84 @@ export default function GoalsPage() {
   // Empty state
   if (goals.length === 0) {
     return (
-      <div className="p-6">
+      <div className="finora-goals-page p-8" style={{ background: 'var(--background-primary)', minHeight: '100vh' }}>
         {/* Zero State Stats */}
-        <div className="grid grid-cols-4 gap-6 mb-8">
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
+        <div className="grid grid-cols-4 gap-6 mb-12">
+          <div className="finora-card p-6">
+            <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Saved</p>
-                <h3 className="text-2xl font-semibold text-gray-900">$0.00</h3>
-                <span className="text-xs text-gray-500">Create goals to start saving</span>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Total Saved</p>
+                <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>$0.00</h3>
               </div>
-              <div className="p-3 bg-gray-100 rounded-full">
-                <DollarSign size={20} className="text-gray-400" />
+              <div className="p-2 rounded-lg" style={{ background: 'rgba(34, 197, 94, 0.1)' }}>
+                <DollarSign size={20} className="text-green-400" />
               </div>
             </div>
-          </Card>
+            <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <span>Create goals to start saving</span>
+            </div>
+          </div>
 
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
+          <div className="finora-card p-6">
+            <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Target</p>
-                <h3 className="text-2xl font-semibold text-gray-900">$0.00</h3>
-                <span className="text-xs text-gray-500">No goals set yet</span>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Total Target</p>
+                <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>$0.00</h3>
               </div>
-              <div className="p-3 bg-gray-100 rounded-full">
-                <Target size={20} className="text-gray-400" />
+              <div className="p-2 rounded-lg" style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
+                <Target size={20} className="text-blue-400" />
               </div>
             </div>
-          </Card>
+            <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <span>No goals set yet</span>
+            </div>
+          </div>
 
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
+          <div className="finora-card p-6">
+            <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Monthly Savings</p>
-                <h3 className="text-2xl font-semibold text-gray-900">$0.00</h3>
-                <span className="text-xs text-gray-500">Set contribution amounts</span>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Monthly Savings</p>
+                <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>$0.00</h3>
               </div>
-              <div className="p-3 bg-gray-100 rounded-full">
-                <Calendar size={20} className="text-gray-400" />
+              <div className="p-2 rounded-lg" style={{ background: 'rgba(168, 85, 247, 0.1)' }}>
+                <Calendar size={20} className="text-purple-400" />
               </div>
             </div>
-          </Card>
+            <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <span>Set contribution amounts</span>
+            </div>
+          </div>
 
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
+          <div className="finora-card p-6">
+            <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Active Goals</p>
-                <h3 className="text-2xl font-semibold text-gray-900">0</h3>
-                <span className="text-xs text-gray-500">Create your first goal</span>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Active Goals</p>
+                <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>0</h3>
               </div>
-              <div className="p-3 bg-gray-100 rounded-full">
-                <CheckCircle size={20} className="text-gray-400" />
+              <div className="p-2 rounded-lg" style={{ background: 'rgba(251, 146, 60, 0.1)' }}>
+                <CheckCircle size={20} className="text-orange-400" />
               </div>
             </div>
-          </Card>
+            <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <span>Create your first goal</span>
+            </div>
+          </div>
         </div>
 
         {/* Empty State Content */}
         <div className="text-center py-16">
           <Target size={64} className="mx-auto text-gray-400 mb-6" />
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">No Financial Goals Yet</h2>
-          <p className="text-gray-600 mb-8 max-w-md mx-auto">
+          <h2 className="text-2xl font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
+            No Financial Goals Yet
+          </h2>
+          <p className="mb-8 max-w-md mx-auto" style={{ color: 'var(--text-secondary)' }}>
             Start your financial journey by setting meaningful goals. Whether it's building an emergency fund, 
             saving for a vacation, or planning for retirement, we'll help you track your progress.
           </p>
-          <Button className="gap-2">
+          <Button 
+            className="gap-2"
+            style={{ background: 'var(--sidebar-primary)' }}
+          >
             <Plus size={16} />
             Create Your First Goal
           </Button>
@@ -160,77 +172,77 @@ export default function GoalsPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="finora-goals-page p-8" style={{ background: 'var(--background-primary)', minHeight: '100vh' }}>
       {/* Header Stats */}
       <div className="grid grid-cols-4 gap-6 mb-8">
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
+        <div className="finora-card p-6">
+          <div className="flex justify-between items-start mb-4">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Saved</p>
-              <h3 className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Total Saved</p>
+              <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>
                 ${totalSaved.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </h3>
-              <div className="flex items-center gap-1 mt-1">
-                <TrendingUp size={12} className="text-green-500" />
-                <span className="text-xs text-green-500">{overallProgress}% of target</span>
-              </div>
             </div>
-            <div className="p-3 bg-green-100 rounded-full">
-              <DollarSign size={20} className="text-green-600" />
+            <div className="p-2 rounded-lg" style={{ background: 'rgba(34, 197, 94, 0.1)' }}>
+              <DollarSign size={20} className="text-green-400" />
             </div>
           </div>
-        </Card>
+          <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <TrendingUp size={14} className="text-green-400" />
+            <span>{overallProgress}% of target</span>
+          </div>
+        </div>
 
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
+        <div className="finora-card p-6">
+          <div className="flex justify-between items-start mb-4">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Target</p>
-              <h3 className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Total Target</p>
+              <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>
                 ${totalTarget.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </h3>
-              <div className="flex items-center gap-1 mt-1">
-                <span className="text-xs text-gray-500">{overallProgress}% complete</span>
-              </div>
             </div>
-            <div className="p-3 bg-blue-100 rounded-full">
-              <Target size={20} className="text-blue-600" />
+            <div className="p-2 rounded-lg" style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
+              <Target size={20} className="text-blue-400" />
             </div>
           </div>
-        </Card>
+          <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <span>{overallProgress}% complete</span>
+          </div>
+        </div>
 
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
+        <div className="finora-card p-6">
+          <div className="flex justify-between items-start mb-4">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Monthly Savings</p>
-              <h3 className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Monthly Savings</p>
+              <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>
                 ${totalMonthlyContributions.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </h3>
-              <div className="flex items-center gap-1 mt-1">
-                <span className="text-xs text-gray-500">Across all goals</span>
-              </div>
             </div>
-            <div className="p-3 bg-purple-100 rounded-full">
-              <Calendar size={20} className="text-purple-600" />
+            <div className="p-2 rounded-lg" style={{ background: 'rgba(168, 85, 247, 0.1)' }}>
+              <Calendar size={20} className="text-purple-400" />
             </div>
           </div>
-        </Card>
+          <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <span>Across all goals</span>
+          </div>
+        </div>
 
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
+        <div className="finora-card p-6">
+          <div className="flex justify-between items-start mb-4">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Active Goals</p>
-              <h3 className="text-2xl font-semibold text-gray-900">{goals.length}</h3>
-              <div className="flex items-center gap-1 mt-1">
-                <span className="text-xs text-gray-500">
-                  {goals.filter(g => g.status === 'on-track').length} on track
-                </span>
-              </div>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Active Goals</p>
+              <h3 className="text-3xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>{goals.length}</h3>
             </div>
-            <div className="p-3 bg-orange-100 rounded-full">
-              <CheckCircle size={20} className="text-orange-600" />
+            <div className="p-2 rounded-lg" style={{ background: 'rgba(251, 146, 60, 0.1)' }}>
+              <CheckCircle size={20} className="text-orange-400" />
             </div>
           </div>
-        </Card>
+          <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <span>
+              {goals.filter(g => g.status === 'on-track').length} on track
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
@@ -238,13 +250,16 @@ export default function GoalsPage() {
         {/* Goals List */}
         <div className="col-span-2">
           <Tabs defaultValue="all" className="w-full">
-            <div className="flex items-center justify-between mb-4">
-              <TabsList>
-                <TabsTrigger value="all">All Goals</TabsTrigger>
-                <TabsTrigger value="on-track">On Track</TabsTrigger>
-                <TabsTrigger value="behind">Behind</TabsTrigger>
+            <div className="flex items-center justify-between mb-6">
+              <TabsList style={{ background: 'var(--background-card)' }}>
+                <TabsTrigger value="all" style={{ color: 'var(--text-secondary)' }}>All Goals</TabsTrigger>
+                <TabsTrigger value="on-track" style={{ color: 'var(--text-secondary)' }}>On Track</TabsTrigger>
+                <TabsTrigger value="behind" style={{ color: 'var(--text-secondary)' }}>Behind</TabsTrigger>
               </TabsList>
-              <Button className="gap-2">
+              <Button 
+                className="gap-2"
+                style={{ background: 'var(--sidebar-primary)' }}
+              >
                 <Plus size={16} />
                 Add New Goal
               </Button>
@@ -252,20 +267,28 @@ export default function GoalsPage() {
 
             <TabsContent value="all" className="space-y-4">
               {goals.map((goal) => (
-                <Card key={goal.id} className="p-6">
+                <div key={goal.id} className="finora-card p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-semibold text-gray-900">{goal.title}</h3>
-                        <Badge variant="outline" className={getStatusColor(goal.status)}>
+                        <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>{goal.title}</h3>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${getStatusColor(goal.status)}`}
+                          style={{ background: 'transparent' }}
+                        >
                           {goal.status}
                         </Badge>
-                        <Badge variant="outline" className={getPriorityColor(goal.priority)}>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${getPriorityColor(goal.priority)}`}
+                          style={{ background: 'transparent' }}
+                        >
                           {goal.priority}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600 mb-3">{goal.description}</p>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
+                      <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{goal.description}</p>
+                      <div className="flex items-center gap-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
                         <div className="flex items-center gap-1">
                           <Calendar size={14} />
                           <span>Due {formatDate(goal.targetDate)}</span>
@@ -280,83 +303,102 @@ export default function GoalsPage() {
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-900">Progress</span>
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Progress</span>
+                      <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                         ${goal.currentAmount.toLocaleString()} of ${goal.targetAmount.toLocaleString()}
                       </span>
                     </div>
                     <Progress 
                       value={Math.min((goal.currentAmount / goal.targetAmount) * 100, 100)} 
                       className="h-3" 
+                      style={{ background: 'var(--background-primary)' }}
                     />
-                    <div className="flex items-center justify-between text-sm text-gray-500">
+                    <div className="flex items-center justify-between text-sm" style={{ color: 'var(--text-secondary)' }}>
                       <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}% complete</span>
                       <span>${(goal.targetAmount - goal.currentAmount).toLocaleString()} remaining</span>
                     </div>
                   </div>
-                </Card>
+                </div>
               ))}
             </TabsContent>
 
             <TabsContent value="on-track" className="space-y-4">
               {goals.filter(g => g.status === 'on-track').map((goal) => (
-                <Card key={goal.id} className="p-6">
+                <div key={goal.id} className="finora-card p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-semibold text-gray-900">{goal.title}</h3>
-                        <Badge variant="outline" className={getPriorityColor(goal.priority)}>
+                        <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>{goal.title}</h3>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${getPriorityColor(goal.priority)}`}
+                          style={{ background: 'transparent' }}
+                        >
                           {goal.priority}
                         </Badge>
-                        <Badge variant="outline" className={getStatusColor(goal.status)}>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${getStatusColor(goal.status)}`}
+                          style={{ background: 'transparent' }}
+                        >
                           {goal.status}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600 mb-3">{goal.description}</p>
+                      <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{goal.description}</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <Progress 
                       value={Math.min((goal.currentAmount / goal.targetAmount) * 100, 100)} 
                       className="h-3" 
+                      style={{ background: 'var(--background-primary)' }}
                     />
-                    <div className="flex items-center justify-between text-sm text-gray-500">
+                    <div className="flex items-center justify-between text-sm" style={{ color: 'var(--text-secondary)' }}>
                       <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}% complete</span>
                       <span>${(goal.targetAmount - goal.currentAmount).toLocaleString()} remaining</span>
                     </div>
                   </div>
-                </Card>
+                </div>
               ))}
             </TabsContent>
 
             <TabsContent value="behind" className="space-y-4">
               {goals.filter(g => g.status === 'behind').map((goal) => (
-                <Card key={goal.id} className="p-6 border-red-200">
+                <div key={goal.id} className="finora-card p-6 border-red-400/30">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-semibold text-gray-900">{goal.title}</h3>
-                        <Badge variant="outline" className={getPriorityColor(goal.priority)}>
+                        <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>{goal.title}</h3>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${getPriorityColor(goal.priority)}`}
+                          style={{ background: 'transparent' }}
+                        >
                           {goal.priority}
                         </Badge>
-                        <Badge variant="outline" className={getStatusColor(goal.status)}>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${getStatusColor(goal.status)}`}
+                          style={{ background: 'transparent' }}
+                        >
                           {goal.status}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600 mb-3">{goal.description}</p>
+                      <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{goal.description}</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <Progress 
                       value={Math.min((goal.currentAmount / goal.targetAmount) * 100, 100)} 
                       className="h-3" 
+                      style={{ background: 'var(--background-primary)' }}
                     />
-                    <div className="flex items-center justify-between text-sm text-gray-500">
+                    <div className="flex items-center justify-between text-sm" style={{ color: 'var(--text-secondary)' }}>
                       <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}% complete</span>
-                      <span className="text-red-600">Needs attention</span>
+                      <span className="text-red-400">Needs attention</span>
                     </div>
                   </div>
-                </Card>
+                </div>
               ))}
             </TabsContent>
           </Tabs>
@@ -366,12 +408,20 @@ export default function GoalsPage() {
         <div className="space-y-6">
           {/* Goal Categories */}
           <div>
-            <h3 className="font-medium text-gray-900 mb-4">Goal Categories</h3>
+            <h3 className="font-medium mb-4" style={{ color: 'var(--text-primary)' }}>Goal Categories</h3>
             <div className="space-y-2">
               {Array.from(new Set(goals.map(g => g.category))).map((category) => (
-                <div key={category} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
-                  <span className="text-sm font-medium text-gray-700">{category}</span>
-                  <Badge variant="secondary" className="text-xs">
+                <div key={category} className="flex items-center justify-between p-3 rounded-lg" style={{ background: 'rgba(107, 114, 128, 0.1)' }}>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{category}</span>
+                  <Badge 
+                    variant="secondary" 
+                    className="text-xs"
+                    style={{ 
+                      background: 'rgba(107, 70, 193, 0.2)', 
+                      color: 'var(--text-secondary)',
+                      border: 'none'
+                    }}
+                  >
                     {goals.filter(g => g.category === category).length}
                   </Badge>
                 </div>
@@ -381,9 +431,12 @@ export default function GoalsPage() {
 
           {/* Quick Actions */}
           <div>
-            <h3 className="font-medium text-gray-900 mb-4">Quick Actions</h3>
+            <h3 className="font-medium mb-4" style={{ color: 'var(--text-primary)' }}>Quick Actions</h3>
             <div className="space-y-3">
-              <Button className="w-full justify-start gap-2">
+              <Button 
+                className="w-full justify-start gap-2"
+                style={{ background: 'var(--sidebar-primary)' }}
+              >
                 <Plus size={16} />
                 Add New Goal
               </Button>

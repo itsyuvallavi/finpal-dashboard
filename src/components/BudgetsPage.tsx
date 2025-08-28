@@ -45,39 +45,44 @@ export default function BudgetsPage() {
   ];
 
   return (
-    <div className="p-6 max-w-6xl mx-auto opacity-50 pointer-events-none">
+    <div className="p-8 max-w-6xl mx-auto opacity-50 pointer-events-none" style={{ background: 'var(--background-primary)', minHeight: '100vh' }}>
       {/* Coming Soon Header */}
       <div className="text-center mb-12">
         <div className="mb-6">
           <Target size={64} className="mx-auto text-gray-400 mb-4" />
-          <h1 className="text-3xl font-bold text-gray-500 mb-2">Budget Management</h1>
-          <p className="text-lg text-gray-400">Feature coming soon</p>
+          <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-secondary)' }}>Budget Management</h1>
+          <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>Feature coming soon</p>
         </div>
-        <Button size="lg" className="bg-gray-400 hover:bg-gray-400 cursor-not-allowed" disabled>
+        <Button 
+          size="lg" 
+          className="cursor-not-allowed" 
+          disabled
+          style={{ background: 'var(--text-secondary)', opacity: 0.5 }}
+        >
           Coming Soon
         </Button>
       </div>
 
       {/* Planned Features */}
       <div className="mb-12">
-        <h2 className="text-2xl font-semibold text-gray-500 mb-8 text-center">Planned Features</h2>
+        <h2 className="text-2xl font-semibold mb-8 text-center" style={{ color: 'var(--text-secondary)' }}>Planned Features</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {comingSoonFeatures.map((feature, index) => (
-            <Card key={index} className="p-6 text-center bg-gray-50 border-gray-200">
+            <div key={index} className="finora-card p-6 text-center" style={{ opacity: 0.7 }}>
               <div className="mb-4 flex justify-center text-gray-400">
                 {feature.icon}
               </div>
-              <h3 className="font-semibold text-gray-500 mb-2">{feature.title}</h3>
+              <h3 className="font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>{feature.title}</h3>
               <p className="text-sm text-gray-400">{feature.description}</p>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
 
       {/* Current Status */}
-      <Card className="p-8 bg-gray-100 border-gray-200">
+      <div className="finora-card p-8" style={{ opacity: 0.7 }}>
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-500 mb-4">Development Status</h3>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-secondary)' }}>Development Status</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between max-w-md mx-auto">
               <span className="text-sm text-gray-400">UI Design</span>
@@ -93,7 +98,7 @@ export default function BudgetsPage() {
             </div>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
