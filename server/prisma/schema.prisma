@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String
+  passwordHash String @map("password_hash")
+  
+  // Personal information for AI insights
+  age            Int?
+  maritalStatus  String? @map("marital_status")
+  children       Int?
+  location       String?
+  occupation     String?
+  annualIncome   String? @map("annual_income")
+  
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  transactions Transaction[]
+  goals        Goal[]
+
+  @@map("users")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  amount      Float
+  description String
+  category    String
+  date        DateTime @default(now())
+  location    String?
+  paymentMethod String? @map("payment_method")
+  recurring   Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
+
+model Goal {
+  id                  String   @id @default(cuid())
+  userId              String   @map("user_id")
+  title               String
+  description         String?
+  targetAmount        Float    @map("target_amount")
+  currentAmount       Float    @default(0) @map("current_amount")
+  targetDate          DateTime @map("target_date")
+  category            String
+  priority            String   @default("medium") // high, medium, low
+  monthlyContribution Float    @default(0) @map("monthly_contribution")
+  status              String   @default("on-track") // on-track, behind, ahead, completed
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("goals")
+}

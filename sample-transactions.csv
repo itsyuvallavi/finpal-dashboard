@@ -1,0 +1,11 @@
+Date,Description,Amount,Category,Location,Payment Method
+01/25/2025,"Coffee Shop Purchase",-4.50,Food & Dining,"Main Street Coffee",Credit Card
+01/24/2025,"Grocery Store",-85.32,Groceries,"SuperMart",Debit Card
+01/24/2025,"Gas Station",-45.00,Transportation,"Shell Station",Credit Card
+01/23/2025,"Salary Deposit",2500.00,Income,"Direct Deposit",Bank Transfer
+01/23/2025,"Restaurant Dinner",-32.75,Food & Dining,"Pizza Palace",Credit Card
+01/22/2025,"Pharmacy",-15.99,Healthcare,"CVS Pharmacy",Debit Card
+01/22/2025,"Online Subscription",-9.99,Entertainment,"Netflix",Credit Card
+01/21/2025,"ATM Withdrawal",-100.00,Cash,"Bank ATM",ATM
+01/20/2025,"Electric Bill",-125.50,Utilities,"City Electric",Auto-Pay
+01/20/2025,"Freelance Payment",450.00,Income,"PayPal",Bank Transfer

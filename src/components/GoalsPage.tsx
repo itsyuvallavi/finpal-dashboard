@@ -1,110 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Target, 
   Calendar, 
   DollarSign, 
   TrendingUp,
-  Edit,
-  Trash2,
   Plus,
   CheckCircle,
-  AlertCircle,
-  Clock
+  FileText
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { goalsAPI } from '../services/api';
 
 export default function GoalsPage() {
-  const [selectedTimeframe, setSelectedTimeframe] = useState('All Goals');
+  const [goals, setGoals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const goals = [
-    {
-      id: 1,
-      title: 'Emergency Fund',
-      description: 'Build 6 months of living expenses',
-      currentAmount: 6800,
-      targetAmount: 10000,
-      targetDate: '2025-06-01',
-      category: 'Safety Net',
-      priority: 'high',
-      monthlyContribution: 400,
-      status: 'on-track',
-      daysRemaining: 155,
-      progressPercentage: 68
-    },
-    {
-      id: 2,
-      title: 'Vacation to Japan',
-      description: 'Two-week trip including flights and accommodation',
-      currentAmount: 2250,
-      targetAmount: 5000,
-      targetDate: '2025-08-15',
-      category: 'Travel',
-      priority: 'medium',
-      monthlyContribution: 350,
-      status: 'on-track',
-      daysRemaining: 230,
-      progressPercentage: 45
-    },
-    {
-      id: 3,
-      title: 'Investment Portfolio',
-      description: 'Build diversified investment portfolio',
-      currentAmount: 3450,
-      targetAmount: 15000,
-      targetDate: '2026-12-31',
-      category: 'Investment',
-      priority: 'medium',
-      monthlyContribution: 500,
-      status: 'behind',
-      daysRemaining: 735,
-      progressPercentage: 23
-    },
-    {
-      id: 4,
-      title: 'New Car Down Payment',
-      description: '20% down payment for reliable vehicle',
-      currentAmount: 1200,
-      targetAmount: 8000,
-      targetDate: '2025-12-01',
-      category: 'Transportation',
-      priority: 'low',
-      monthlyContribution: 600,
-      status: 'ahead',
-      daysRemaining: 340,
-      progressPercentage: 15
-    }
-  ];
+  useEffect(() => {
+    const fetchGoals = async () => {
+      try {
+        const response = await goalsAPI.getAll();
+        setGoals(response.goals || []);
+      } catch (error) {
+        console.error('Error fetching goals:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const goalInsights = [
-    {
-      type: 'success',
-      title: 'Emergency Fund Milestone',
-      description: 'You\'re ahead of schedule! At this rate, you\'ll reach your goal 2 months early.',
-      goalId: 1
-    },
-    {
-      type: 'warning',
-      title: 'Investment Goal Behind',
-      description: 'Consider increasing monthly contributions by $150 to stay on track.',
-      goalId: 3
-    },
-    {
-      type: 'tip',
-      title: 'Auto-Save Opportunity',
-      description: 'Round up purchases to boost your vacation fund faster.',
-      goalId: 2
-    }
-  ];
+    fetchGoals();
+  }, []);
+
+  // Calculate real stats from user data
+  const totalSaved = goals.reduce((sum, goal) => sum + goal.currentAmount, 0);
+  const totalTarget = goals.reduce((sum, goal) => sum + goal.targetAmount, 0);
+  const overallProgress = totalTarget > 0 ? Math.round((totalSaved / totalTarget) * 100) : 0;
+  const totalMonthlyContributions = goals.reduce((sum, goal) => sum + goal.monthlyContribution, 0);
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'on-track': return 'bg-green-100 text-green-800';
       case 'behind': return 'bg-red-100 text-red-800';
       case 'ahead': return 'bg-blue-100 text-blue-800';
+      case 'completed': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -126,9 +67,97 @@ export default function GoalsPage() {
     });
   };
 
-  const totalSaved = goals.reduce((sum, goal) => sum + goal.currentAmount, 0);
-  const totalTarget = goals.reduce((sum, goal) => sum + goal.targetAmount, 0);
-  const overallProgress = Math.round((totalSaved / totalTarget) * 100);
+  if (isLoading) {
+    return (
+      <div className="p-6">
+        <div className="animate-pulse space-y-6">
+          <div className="grid grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i} className="p-6">
+                <div className="h-20 bg-gray-200 rounded"></div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (goals.length === 0) {
+    return (
+      <div className="p-6">
+        {/* Zero State Stats */}
+        <div className="grid grid-cols-4 gap-6 mb-8">
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Total Saved</p>
+                <h3 className="text-2xl font-semibold text-gray-900">$0.00</h3>
+                <span className="text-xs text-gray-500">Create goals to start saving</span>
+              </div>
+              <div className="p-3 bg-gray-100 rounded-full">
+                <DollarSign size={20} className="text-gray-400" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Total Target</p>
+                <h3 className="text-2xl font-semibold text-gray-900">$0.00</h3>
+                <span className="text-xs text-gray-500">No goals set yet</span>
+              </div>
+              <div className="p-3 bg-gray-100 rounded-full">
+                <Target size={20} className="text-gray-400" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Monthly Savings</p>
+                <h3 className="text-2xl font-semibold text-gray-900">$0.00</h3>
+                <span className="text-xs text-gray-500">Set contribution amounts</span>
+              </div>
+              <div className="p-3 bg-gray-100 rounded-full">
+                <Calendar size={20} className="text-gray-400" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Active Goals</p>
+                <h3 className="text-2xl font-semibold text-gray-900">0</h3>
+                <span className="text-xs text-gray-500">Create your first goal</span>
+              </div>
+              <div className="p-3 bg-gray-100 rounded-full">
+                <CheckCircle size={20} className="text-gray-400" />
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Empty State Content */}
+        <div className="text-center py-16">
+          <Target size={64} className="mx-auto text-gray-400 mb-6" />
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">No Financial Goals Yet</h2>
+          <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            Start your financial journey by setting meaningful goals. Whether it's building an emergency fund, 
+            saving for a vacation, or planning for retirement, we'll help you track your progress.
+          </p>
+          <Button className="gap-2">
+            <Plus size={16} />
+            Create Your First Goal
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
@@ -138,10 +167,12 @@ export default function GoalsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 mb-1">Total Saved</p>
-              <h3 className="text-2xl font-semibold text-gray-900">${totalSaved.toLocaleString()}</h3>
+              <h3 className="text-2xl font-semibold text-gray-900">
+                ${totalSaved.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </h3>
               <div className="flex items-center gap-1 mt-1">
                 <TrendingUp size={12} className="text-green-500" />
-                <span className="text-xs text-green-500">+12% this month</span>
+                <span className="text-xs text-green-500">{overallProgress}% of target</span>
               </div>
             </div>
             <div className="p-3 bg-green-100 rounded-full">
@@ -154,7 +185,9 @@ export default function GoalsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 mb-1">Total Target</p>
-              <h3 className="text-2xl font-semibold text-gray-900">${totalTarget.toLocaleString()}</h3>
+              <h3 className="text-2xl font-semibold text-gray-900">
+                ${totalTarget.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </h3>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-xs text-gray-500">{overallProgress}% complete</span>
               </div>
@@ -169,7 +202,9 @@ export default function GoalsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 mb-1">Monthly Savings</p>
-              <h3 className="text-2xl font-semibold text-gray-900">$1,850</h3>
+              <h3 className="text-2xl font-semibold text-gray-900">
+                ${totalMonthlyContributions.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </h3>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-xs text-gray-500">Across all goals</span>
               </div>
@@ -186,7 +221,9 @@ export default function GoalsPage() {
               <p className="text-sm text-gray-600 mb-1">Active Goals</p>
               <h3 className="text-2xl font-semibold text-gray-900">{goals.length}</h3>
               <div className="flex items-center gap-1 mt-1">
-                <span className="text-xs text-gray-500">2 on track</span>
+                <span className="text-xs text-gray-500">
+                  {goals.filter(g => g.status === 'on-track').length} on track
+                </span>
               </div>
             </div>
             <div className="p-3 bg-orange-100 rounded-full">
@@ -220,36 +257,24 @@ export default function GoalsPage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="font-semibold text-gray-900">{goal.title}</h3>
-                        <Badge variant="outline" className={getPriorityColor(goal.priority)}>
-                          {goal.priority}
-                        </Badge>
                         <Badge variant="outline" className={getStatusColor(goal.status)}>
                           {goal.status}
                         </Badge>
+                        <Badge variant="outline" className={getPriorityColor(goal.priority)}>
+                          {goal.priority}
+                        </Badge>
                       </div>
                       <p className="text-sm text-gray-600 mb-3">{goal.description}</p>
-                      <div className="flex items-center gap-6 text-sm text-gray-500">
+                      <div className="flex items-center gap-4 text-sm text-gray-500">
                         <div className="flex items-center gap-1">
                           <Calendar size={14} />
                           <span>Due {formatDate(goal.targetDate)}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock size={14} />
-                          <span>{goal.daysRemaining} days left</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <DollarSign size={14} />
                           <span>${goal.monthlyContribution}/month</span>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Edit size={16} />
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <Trash2 size={16} />
-                      </Button>
                     </div>
                   </div>
 
@@ -260,9 +285,12 @@ export default function GoalsPage() {
                         ${goal.currentAmount.toLocaleString()} of ${goal.targetAmount.toLocaleString()}
                       </span>
                     </div>
-                    <Progress value={goal.progressPercentage} className="h-3" />
+                    <Progress 
+                      value={Math.min((goal.currentAmount / goal.targetAmount) * 100, 100)} 
+                      className="h-3" 
+                    />
                     <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{goal.progressPercentage}% complete</span>
+                      <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}% complete</span>
                       <span>${(goal.targetAmount - goal.currentAmount).toLocaleString()} remaining</span>
                     </div>
                   </div>
@@ -288,9 +316,12 @@ export default function GoalsPage() {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <Progress value={goal.progressPercentage} className="h-3" />
+                    <Progress 
+                      value={Math.min((goal.currentAmount / goal.targetAmount) * 100, 100)} 
+                      className="h-3" 
+                    />
                     <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{goal.progressPercentage}% complete</span>
+                      <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}% complete</span>
                       <span>${(goal.targetAmount - goal.currentAmount).toLocaleString()} remaining</span>
                     </div>
                   </div>
@@ -316,9 +347,12 @@ export default function GoalsPage() {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <Progress value={goal.progressPercentage} className="h-3" />
+                    <Progress 
+                      value={Math.min((goal.currentAmount / goal.targetAmount) * 100, 100)} 
+                      className="h-3" 
+                    />
                     <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{goal.progressPercentage}% complete</span>
+                      <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}% complete</span>
                       <span className="text-red-600">Needs attention</span>
                     </div>
                   </div>
@@ -330,30 +364,17 @@ export default function GoalsPage() {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Goal Insights */}
+          {/* Goal Categories */}
           <div>
-            <h3 className="font-medium text-gray-900 mb-4">Goal Insights</h3>
-            <div className="space-y-4">
-              {goalInsights.map((insight, index) => (
-                <Card key={index} className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-full ${
-                      insight.type === 'warning' ? 'bg-red-100' :
-                      insight.type === 'success' ? 'bg-green-100' : 'bg-blue-100'
-                    }`}>
-                      {insight.type === 'warning' && <AlertCircle size={14} className="text-red-600" />}
-                      {insight.type === 'success' && <CheckCircle size={14} className="text-green-600" />}
-                      {insight.type === 'tip' && <Target size={14} className="text-blue-600" />}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-sm font-medium text-gray-900 mb-1">{insight.title}</h4>
-                      <p className="text-xs text-gray-600 mb-2">{insight.description}</p>
-                      <Button variant="ghost" size="sm" className="p-0 h-auto text-xs text-blue-600 hover:text-blue-700">
-                        View details →
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
+            <h3 className="font-medium text-gray-900 mb-4">Goal Categories</h3>
+            <div className="space-y-2">
+              {Array.from(new Set(goals.map(g => g.category))).map((category) => (
+                <div key={category} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                  <span className="text-sm font-medium text-gray-700">{category}</span>
+                  <Badge variant="secondary" className="text-xs">
+                    {goals.filter(g => g.category === category).length}
+                  </Badge>
+                </div>
               ))}
             </div>
           </div>
@@ -362,33 +383,10 @@ export default function GoalsPage() {
           <div>
             <h3 className="font-medium text-gray-900 mb-4">Quick Actions</h3>
             <div className="space-y-3">
-              <Button variant="outline" className="w-full justify-start gap-2">
+              <Button className="w-full justify-start gap-2">
                 <Plus size={16} />
-                Create New Goal
+                Add New Goal
               </Button>
-              <Button variant="outline" className="w-full justify-start gap-2">
-                <TrendingUp size={16} />
-                Boost Savings
-              </Button>
-              <Button variant="outline" className="w-full justify-start gap-2">
-                <Calendar size={16} />
-                Schedule Review
-              </Button>
-            </div>
-          </div>
-
-          {/* Goal Categories */}
-          <div>
-            <h3 className="font-medium text-gray-900 mb-4">Categories</h3>
-            <div className="space-y-2">
-              {['Safety Net', 'Travel', 'Investment', 'Transportation'].map((category) => (
-                <div key={category} className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50">
-                  <span className="text-sm text-gray-700">{category}</span>
-                  <Badge variant="secondary" className="text-xs">
-                    {goals.filter(g => g.category === category).length}
-                  </Badge>
-                </div>
-              ))}
             </div>
           </div>
         </div>
